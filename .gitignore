@@ -1,0 +1,5 @@
+# node packages and build artefactss
+node_modules/
+
+# finder garbage
+*.DS_Store
