@@ -10,7 +10,7 @@
 
     <h2>Resource Utilization</h2>
     <ul class="plist">
-      <li><span>Memory Used: </span> {{response.mem}} bytes</li>
+      <li><span>Memory Used: </span> {{formatBytes response.mem}}</li>
       <li><span>Load Average: </span> {{#each response.load}} {{roundLoadAvg this}} {{/each}}</li>
     </ul>
   </div>

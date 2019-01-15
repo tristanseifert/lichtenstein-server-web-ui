@@ -1,0 +1,35 @@
+<div class="grid-x node-list">
+  <div class="cell small-12">
+    <h1>Nodes</h1>
+
+    {{#if response.nodes}}
+      <table>
+        <thead>
+          <tr>
+            <th>IP Address</th>
+            <th>MAC Address</th>
+            <th>Hostname</th>
+            <th>Channels</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each response.nodes}}
+            <tr>
+              <td>{{ip}}</td>
+              <td>{{mac}}</td>
+              <td>{{hostname}}</td>
+              <td>{{numChannels}}</td>
+              <td><a href="/node/{{id}}">More Info</a></td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    {{else}}
+      <div class="callout primary">
+        <h5>No Nodes Available</h5>
+        <p>The server didn't return any nodes for display.</p>
+      </div>
+    {{/if}}
+  </div>
+</div>

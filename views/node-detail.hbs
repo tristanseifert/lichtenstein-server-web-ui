@@ -1,0 +1,26 @@
+<div class="grid-x node-detail">
+  <div class="cell small-12">
+    <h1>Node Detail: {{node.hostname}}</h1>
+
+    <ul class="plist">
+      <li><span>Hardware Version: </span> {{toHexString node.hwVersion}}</li>
+      <li><span>Number of Channels: </span> {{node.numChannels}}</li>
+      <li><span>Framebuffer Size: </span> {{formatBytes node.fbSize}}</li>
+      <li><span>Software Version: </span> {{toHexString node.swVersion}}</li>
+    </ul>
+
+    <h2>Network</h2>
+    <ul class="plist">
+      <li><span>MAC Address: </span> {{node.mac}}</li>
+      <li><span>IP Address: </span> {{node.ip}}</li>
+      <li><span>Last Seen: </span> {{node.lastSeen}}</li>
+    </ul>
+
+    <h2>Channels</h2>
+    <ul>
+      {{#each node.channels}}
+        <li><a href="/node/{{node.id}}/channel/{{id}}">Channel {{addOne nodeIndex}}</a></li>
+      {{/each}}
+    </ul>
+  </div>
+</div>

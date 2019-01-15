@@ -47,9 +47,19 @@ var socketDataReceived = function(jsonData) {
   var txn = data.txn;
 
   if(state.transactions[txn]) {
-    // run the callback
     var info = state.transactions[txn];
-    info.cb(data, null);
+
+    // if status is nonzero in response, run error callback
+    if(data.status != 0) {
+      var err = new Error(data.error);
+      err.response = data;
+
+      info.cb(null, err);
+    }
+    // otherwise, pass data to callback
+    else {
+      info.cb(data, null);
+    }
 
     // remove it
     delete state.transactions[txn];
@@ -66,6 +76,15 @@ var socketError = function(err) {
   // TODO: better handling
   throw(err);
 };
+/**
+ * The remote end closed the socket. This will terminate the app.
+ */
+var socketEnded = function() {
+  console.log('socket ended, terminating!');
+
+  // TODO: better handling
+  process.exit(1);
+};
 
 
 
@@ -77,6 +96,23 @@ var getServerStatus = function(callback) {
     type: 0
   }, callback);
 };
+
+/**
+ * Gets info about node(s).
+ */
+var getNodes = function(nodeId, callback) {
+  var request = {
+    type: 5
+  };
+
+  // if node id is specified, do a request for it
+  if(nodeId != null) {
+    request.id = Number(nodeId);
+  }
+
+  // actually perform request now
+  doTxn(request, callback);
+}
 
 
 
@@ -99,6 +135,7 @@ var connect = function(options) {
 
   // also, handle the socket being closed
   state.socket.on('error', socketError);
+  state.socket.on('end', socketEnded);
 
   // get server state on connect
   state.socket.on('connect', function() {
@@ -113,6 +150,9 @@ module.exports = {
   connect: connect,
 
   getServerStatus: getServerStatus,
+
+  getAllNodes: function(callback) { getNodes(null, callback) },
+  getNode: getNodes,
 
   _state: state
 };

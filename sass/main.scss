@@ -56,6 +56,9 @@
 @include foundation-visibility-classes;
 // @include foundation-prototype-classes;
 
+// include toastr css
+@import 'node_modules/toastr/toastr.scss';
+
 body {
 
 }

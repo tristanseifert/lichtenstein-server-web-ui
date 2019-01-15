@@ -27,7 +27,21 @@ app.engine('hbs', hbs({
   extname: 'hbs',
   defaultLayout: 'layout',
   layoutsDir: __dirname + '/views/layouts/',
-  partialsDir: __dirname + '/views/partials/'
+  partialsDir: __dirname + '/views/partials/',
+
+  helpers: {
+    addOne: function(input) {
+      return (Number(input) + 1);
+    },
+    toHexString: function(input) {
+      return '0x' + Number(input).toString(16).toUpperCase();
+    },
+    formatBytes: function(input) {
+      var bytes = Number(input);
+      // TODO: implement, lol
+      return bytes + ' bytes';
+    }
+  }
 }));
 
 app.use(logger('dev'));
@@ -57,6 +71,7 @@ app.use('/css',
 // serve foundation JS
 app.use("/js/jquery.min.js", express.static(__dirname + '/node_modules/jquery/dist/jquery.min.js'));
 app.use("/js/foundation.min.js", express.static(__dirname + '/node_modules/foundation-sites/dist/js/foundation.min.js'));
+app.use("/js/toastr.min.js", express.static(__dirname + '/node_modules/toastr/build/toastr.min.js'));
 
 // serve static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -68,6 +83,10 @@ app.use('/', indexRouter);
 // server status
 var statusRouter = require('./routes/status');
 app.use('/status', statusRouter);
+
+// nodes status
+var nodeRouter = require('./routes/node');
+app.use('/node', nodeRouter);
 
 
 
