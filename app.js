@@ -11,6 +11,18 @@ var app = express();
 
 var hbs = require('express-handlebars');
 
+// create lichtenstein connection
+var config = require('config');
+
+var lichtenstein_api = require('./lichtenstein/api');
+
+lichtenstein_api.connect({
+  host: config.get('lichtenstein.host'),
+  port: config.get('lichtenstein.port')
+});
+
+global.lichtenstein = lichtenstein_api;
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
