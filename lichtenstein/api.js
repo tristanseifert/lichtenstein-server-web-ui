@@ -114,6 +114,23 @@ var getNodes = function(nodeId, callback) {
   doTxn(request, callback);
 }
 
+/**
+ * Gets info about group(s).
+ */
+var getGroups = function(groupId, callback) {
+  var request = {
+    type: 7
+  };
+
+  // if group id is specified, do a request for it
+  if(groupId != null) {
+    request.id = Number(groupId);
+  }
+
+  // actually perform request now
+  doTxn(request, callback);
+}
+
 
 
 /**
@@ -153,6 +170,9 @@ module.exports = {
 
   getAllNodes: function(callback) { getNodes(null, callback) },
   getNode: getNodes,
+
+  getAllGroups: function(callback) { getGroups(null, callback) },
+  getGroup: getGroups,
 
   _state: state
 };

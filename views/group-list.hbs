@@ -1,0 +1,35 @@
+<div class="grid-x group-list">
+  <div class="cell small-12">
+    <h1>Groups</h1>
+
+    {{#if response.groups}}
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Start Offset</th>
+            <th>End Offset</th>
+            <th>Channels</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each response.groups}}
+            <tr>
+              <td>{{name}}</td>
+              <td>{{start}}</td>
+              <td>{{end}}</td>
+              <td>{{numChannels}}</td>
+              <td><a href="/group/{{id}}">More Info…</a></td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    {{else}}
+      <div class="callout primary">
+        <h5>No Groups Available</h5>
+        <p>The server didn't return any groups for display.</p>
+      </div>
+    {{/if}}
+  </div>
+</div>

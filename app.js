@@ -84,9 +84,12 @@ app.use('/', indexRouter);
 var statusRouter = require('./routes/status');
 app.use('/status', statusRouter);
 
-// nodes status
+// nodes
 var nodeRouter = require('./routes/node');
 app.use('/node', nodeRouter);
+// groups
+var groupRouter = require('./routes/group');
+app.use('/group', groupRouter);
 
 
 
