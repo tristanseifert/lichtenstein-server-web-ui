@@ -49,6 +49,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+// csrf protection
+var csrf = require('csurf');
+var csrfProtection = csrf({ cookie: true });
+
+app.use(csrfProtection, function(req, res, next) {
+  res.locals.csrfToken = req.csrfToken();
+  next();
+});
+
 // sass for stylesheets
 var sassMiddleware = require('node-sass-middleware');
 
@@ -93,6 +102,10 @@ app.use('/group', groupRouter);
 // routines
 var routineRouter = require('./routes/routine');
 app.use('/routine', routineRouter);
+
+// tools
+var toolsRouter = require('./routes/tools');
+app.use('/tools', toolsRouter);
 
 
 

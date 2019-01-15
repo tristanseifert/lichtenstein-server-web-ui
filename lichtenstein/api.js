@@ -1,5 +1,7 @@
 const net = require('net');
 
+var queue = require('queue');
+
 /**
  * Provides a high-level interface to the Lichtenstein command socket API.
  */
@@ -7,7 +9,10 @@ var state = {
   // last sent transaction
   txn: 0,
   // maps of txn id's to callbacks
-  transactions: {}
+  transactions: {},
+
+  // work queue for transactions
+  queue: null
 };
 
 /**
@@ -16,23 +21,29 @@ var state = {
  * Callbacks take two arguments: The resultant data (object) and an error.
  */
 var doTxn = function(request, callback) {
-  // add the txn field (so we can identify it later)
-  request.txn = (++state.txn);
+  state.queue.push(function(queueCb) {
+    // add the txn field (so we can identify it later)
+    request.txn = (++state.txn);
 
-  console.log('sending request ', request);
+    // console.log('sending request ', request);
 
-  // store callback
-  state.transactions[request.txn] = {
-    "cb": callback
-    /* TODO: handle timeouts? */
-  };
+    // store callback
+    state.transactions[request.txn] = {
+      userCallback: callback,
+      queueCallback: queueCb
+      /* TODO: handle timeouts? */
+    };
 
-  // stringify and send request
-  const str = JSON.stringify(request);
+    // stringify and send request
+    const str = JSON.stringify(request);
 
-  state.socket.write(str, 'utf8', function() {
-    /* data was written - we don't do anything */
+    state.socket.write(str, 'utf8', function() {
+      /* data was written - we don't do anything */
+    });
   });
+
+  // start queue (if needed)
+  state.queue.start();
 };
 
 /**
@@ -54,18 +65,21 @@ var socketDataReceived = function(jsonData) {
       var err = new Error(data.error);
       err.response = data;
 
-      info.cb(null, err);
+      info.userCallback(null, err);
     }
     // otherwise, pass data to callback
     else {
-      info.cb(data, null);
+      info.userCallback(data, null);
     }
+
+    // also, run the queue callback
+    info.queueCallback();
 
     // remove it
     delete state.transactions[txn];
   }
 
-  console.log(state.transactions);
+  // console.log(state.transactions);
 };
 /**
  * Handles a socket error.
@@ -148,6 +162,18 @@ var getRoutines = function(routineId, callback) {
   doTxn(request, callback);
 };
 
+/**
+ * Sets the brightness of a particular group. Brightness should be a value
+ * between 0 and 1.
+ */
+var setBrightness = function(groupId, brightness, callback) {
+  doTxn({
+    type: 4,
+    group: Number(groupId),
+    brightness: Number(brightness)
+  }, callback);
+}
+
 
 
 /**
@@ -155,6 +181,14 @@ var getRoutines = function(routineId, callback) {
  * and "port."
  */
 var connect = function(options) {
+  // create a queue
+  if(state.queue == null) {
+    state.queue = queue({
+      concurrency: 1
+    });
+    state.queue.start();
+  }
+
   // attempt to create the connection
   state.socket = net.createConnection({
     port: options.port,
@@ -193,6 +227,8 @@ module.exports = {
 
   getAllRoutines: function(callback) { getRoutines(null, callback) },
   getRoutine: getRoutines,
+
+  setGroupBrightness: setBrightness,
 
   _state: state
 };
