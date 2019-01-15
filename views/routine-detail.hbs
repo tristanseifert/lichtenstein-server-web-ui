@@ -1,0 +1,26 @@
+<div class="grid-x routine-detail">
+  <div class="cell small-12">
+    <h1>Routine Detail: {{routine.name}}</h1>
+
+    <h2>Defaults</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each routine.defaults}}
+          <tr>
+            <td>{{@key}}</td>
+            <td>{{this}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+
+    <h2>Code</h2>
+    <textarea name="code" class="code">{{routine.code}}</textarea>
+  </div>
+</div>

@@ -67,3 +67,34 @@ body {
 .top-bar {
   margin-bottom: $global-margin;
 }
+
+// node styles
+.node-list {
+
+}
+
+.node-detail {
+
+}
+
+// group styles
+.group-list {
+
+}
+
+.group-detail {
+
+}
+
+// routine styles
+.routine-list {
+
+}
+
+.routine-detail {
+  textarea.code {
+    font-family: monospace;
+
+    height: 20em;
+  }
+}

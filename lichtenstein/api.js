@@ -112,7 +112,7 @@ var getNodes = function(nodeId, callback) {
 
   // actually perform request now
   doTxn(request, callback);
-}
+};
 
 /**
  * Gets info about group(s).
@@ -129,7 +129,24 @@ var getGroups = function(groupId, callback) {
 
   // actually perform request now
   doTxn(request, callback);
-}
+};
+
+/**
+ * Gets info about routine(s).
+ */
+var getRoutines = function(routineId, callback) {
+  var request = {
+    type: 10
+  };
+
+  // if routine id is specified, do a request for it
+  if(routineId != null) {
+    request.id = Number(routineId);
+  }
+
+  // actually perform request now
+  doTxn(request, callback);
+};
 
 
 
@@ -173,6 +190,9 @@ module.exports = {
 
   getAllGroups: function(callback) { getGroups(null, callback) },
   getGroup: getGroups,
+
+  getAllRoutines: function(callback) { getRoutines(null, callback) },
+  getRoutine: getRoutines,
 
   _state: state
 };

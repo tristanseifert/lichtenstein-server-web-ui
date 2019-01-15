@@ -90,6 +90,9 @@ app.use('/node', nodeRouter);
 // groups
 var groupRouter = require('./routes/group');
 app.use('/group', groupRouter);
+// routines
+var routineRouter = require('./routes/routine');
+app.use('/routine', routineRouter);
 
 
 

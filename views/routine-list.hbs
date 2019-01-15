@@ -1,0 +1,29 @@
+<div class="grid-x routine-list">
+  <div class="cell small-12">
+    <h1>Routines</h1>
+
+    {{#if response.routines}}
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each response.routines}}
+            <tr>
+              <td>{{name}}</td>
+              <td><a href="/routine/{{id}}">More Info…</a></td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    {{else}}
+      <div class="callout primary">
+        <h5>No Routines Available</h5>
+        <p>The server didn't return any routines for display.</p>
+      </div>
+    {{/if}}
+  </div>
+</div>
