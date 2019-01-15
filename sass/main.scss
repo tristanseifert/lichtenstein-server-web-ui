@@ -55,3 +55,12 @@
 // @include foundation-flex-classes;
 @include foundation-visibility-classes;
 // @include foundation-prototype-classes;
+
+body {
+
+}
+
+// add some spacing under navbar
+.top-bar {
+  margin-bottom: $global-margin;
+}

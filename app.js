@@ -4,9 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
 var app = express();
 
 var hbs = require('express-handlebars');
@@ -64,8 +61,15 @@ app.use("/js/foundation.min.js", express.static(__dirname + '/node_modules/found
 // serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// index page (the only page we serve, l0l)
+// index page
+var indexRouter = require('./routes/index');
 app.use('/', indexRouter);
+
+// server status
+var statusRouter = require('./routes/status');
+app.use('/status', statusRouter);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,0 +1,17 @@
+<div class="grid-x server-status">
+  <div class="cell small-12">
+    <h1>Server Status</h1>
+
+    <h2>Server Information</h2>
+    <ul class="plist">
+      <li><span>Server Version: </span> {{response.version}}</li>
+      <li><span>Server Build: </span> {{response.build}}</li>
+    </ul>
+
+    <h2>Resource Utilization</h2>
+    <ul class="plist">
+      <li><span>Memory Used: </span> {{response.mem}} bytes</li>
+      <li><span>Load Average: </span> {{#each response.load}} {{roundLoadAvg this}} {{/each}}</li>
+    </ul>
+  </div>
+</div>
