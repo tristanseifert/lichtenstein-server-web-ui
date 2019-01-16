@@ -1,6 +1,24 @@
 var express = require('express');
 var router = express.Router();
 
+/**
+ * Creates a JSON string containing the default parameters of all routines that
+ * were passed in, indexed by id.
+ */
+var getRoutineDefaultString = function(routines) {
+  var defaults = {};
+
+  // iterate over all routines
+  for(var i = 0; i < routines.length; i++) {
+    const routine = routines[i];
+
+    defaults[Number(routine.id)] = routine.defaults;
+  }
+
+  // return stringified version
+  return JSON.stringify(defaults);
+}
+
 // GET /brightness: Shows interface to change brightness of one or more groups
 router.get('/brightness', function(req, res, next) {
   global.lichtenstein.getAllGroups(function(data, err) {
@@ -107,6 +125,8 @@ router.get('/routine', function(req, res, next) {
 
     // save the data
     templateData.routines = data.routines;
+    templateData.defaults = getRoutineDefaultString(data.routines);
+
     renderTemplateIfDone();
   });
 });
@@ -145,6 +165,8 @@ router.post('/routine', function(req, res, next) {
 
       // save the data
       templateData.routines = data.routines;
+      templateData.defaults = getRoutineDefaultString(data.routines);
+
       renderTemplateIfDone();
     });
   };
@@ -168,8 +190,11 @@ router.post('/routine', function(req, res, next) {
     groupsToSet.push(Number(req.body.group));
   }
 
+  // decode params
+  var params = JSON.parse(req.body.params);
+
   // set the routine (TODO: handle parameters)
-  global.lichtenstein.setRoutine(req.body.routine, null, groupsToSet, function(data, err) {
+  global.lichtenstein.setRoutine(req.body.routine, params, groupsToSet, function(data, err) {
     // handle errors
     if(err) {
       return next(err);

@@ -7,6 +7,7 @@ var logger = require('morgan');
 var app = express();
 
 var hbs = require('express-handlebars');
+var Handlebars = require('handlebars');
 
 // create lichtenstein connection
 var config = require('config');
@@ -40,6 +41,9 @@ app.engine('hbs', hbs({
       var bytes = Number(input);
       // TODO: implement, lol
       return bytes + ' bytes';
+    },
+    encodeJson: function(object) {
+      return Handlebars.SafeString(JSON.stringify(object));
     }
   }
 }));

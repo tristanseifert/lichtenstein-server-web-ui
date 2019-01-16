@@ -1,4 +1,4 @@
-<div class="grid-x tool-brightness">
+<div class="grid-x tool-routine">
   <div class="cell small-12">
     <h1>Set Routine</h1>
 
@@ -19,11 +19,28 @@
         <div class="grid-x grid-padding-x">
           <div class="small-12 cell">
             <label>Routine
-              <select name="routine">
+              <select name="routine" id="routine">
                 {{#each routines}}
                   <option value="{{id}}">{{name}}</option>
                 {{/each}}
               </select>
+            </label>
+          </div>
+        </div>
+
+        <div class="grid-x grid-padding-x">
+          <div class="small-12 cell">
+            <label>Parameters
+              <table id="routineParams">
+                <thead>
+                  <tr>
+                    <th>Key</th>
+                    <th>Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
             </label>
           </div>
         </div>
@@ -35,8 +52,15 @@
         </div>
       </div>
 
+      <input type="hidden" name="params">
+
 
       <input type="hidden" name="_csrf" value="{{csrfToken}}">
     </form>
   </div>
 </div>
+
+{{!-- encode each routine's defaults --}}
+<script>
+window.routineDefaults = {{{defaults}}};
+</script>
