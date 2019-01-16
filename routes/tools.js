@@ -110,5 +110,74 @@ router.get('/routine', function(req, res, next) {
     renderTemplateIfDone();
   });
 });
+// POST /routine: Updates the active routine.
+router.post('/routine', function(req, res, next) {
+  var errors = [];
+
+  // this function will render the template when the time comes
+  var renderTemplate = function() {
+    var templateData = {};
+
+    // this function will render the template once all data is loaded
+    var renderTemplateIfDone = function() {
+      // is all data there?
+      if(templateData.groups && templateData.routines) {
+        res.render('tool-routine', templateData);
+      }
+    }
+
+    // get all groups
+    global.lichtenstein.getAllGroups(function(data, err) {
+      if(err) {
+        return next(err);
+      }
+
+      // save the data
+      templateData.groups = data.groups;
+      renderTemplateIfDone();
+    });
+
+    // get all routines
+    global.lichtenstein.getAllRoutines(function(data, err) {
+      if(err) {
+        return next(err);
+      }
+
+      // save the data
+      templateData.routines = data.routines;
+      renderTemplateIfDone();
+    });
+  };
+
+  // make sure all parameters are specified
+  if(!("group" in req.body) || !("routine" in req.body)) {
+    return next(new Error("Missing parameters, you must specify group and routine."));
+  }
+
+  // do we have multiple groups?
+  var groupsToSet = [];
+  var groupsAlreadySet = 0;
+
+  if(req.body.group instanceof Array) {
+    for (var i = 0; i < req.body.group.length; i++) {
+      groupsToSet.push(Number(req.body.group[i]));
+    }
+  }
+  // just a single instance
+  else {
+    groupsToSet.push(Number(req.body.group));
+  }
+
+  // set the routine (TODO: handle parameters)
+  global.lichtenstein.setRoutine(req.body.routine, null, groupsToSet, function(data, err) {
+    // handle errors
+    if(err) {
+      return next(err);
+    }
+
+    // render template
+    renderTemplate();
+  });
+});
 
 module.exports = router;

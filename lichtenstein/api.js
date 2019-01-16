@@ -172,7 +172,32 @@ var setBrightness = function(groupId, brightness, callback) {
     group: Number(groupId),
     brightness: Number(brightness)
   }, callback);
-}
+};
+
+/**
+ * Starts a routine (identified by ID) on one or more groups.
+ */
+var setRoutine = function(routineId, routineParams, groupIds, callback) {
+  // build the basic request
+  var request = {
+    type: 1,
+    routine: {
+      id: Number(routineId)
+    }
+  };
+
+  // is `groupIds` an array?
+  if(groupIds instanceof Array) {
+    request.groups = groupIds;
+  } else {
+    request.groups = [Number(groupIds)];
+  }
+
+  // TODO: handle routineParams
+
+  // perform txn
+  doTxn(request, callback);
+};
 
 
 
@@ -229,6 +254,8 @@ module.exports = {
   getRoutine: getRoutines,
 
   setGroupBrightness: setBrightness,
+
+  setRoutine: setRoutine,
 
   _state: state
 };

@@ -1,0 +1,42 @@
+<div class="grid-x tool-brightness">
+  <div class="cell small-12">
+    <h1>Set Routine</h1>
+
+    <form method="post">
+      <div class="grid-container">
+        <div class="grid-x grid-padding-x">
+          <div class="small-12 cell">
+            <label>Groups
+              <select multiple name="group">
+                {{#each groups}}
+                  <option value="{{id}}">{{name}}</option>
+                {{/each}}
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div class="grid-x grid-padding-x">
+          <div class="small-12 cell">
+            <label>Routine
+              <select name="routine">
+                {{#each routines}}
+                  <option value="{{id}}">{{name}}</option>
+                {{/each}}
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div class="grid-x grid-padding-x">
+          <div class="small-12 cell">
+            <button type="submit" class="button">Submit</button>
+          </div>
+        </div>
+      </div>
+
+
+      <input type="hidden" name="_csrf" value="{{csrfToken}}">
+    </form>
+  </div>
+</div>
