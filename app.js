@@ -53,6 +53,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+// API (before CSRF to avoid having it)
+var apiRouter = require('./routes/api');
+app.use('/api/v1', apiRouter);
+
 // csrf protection
 var csrf = require('csurf');
 var csrfProtection = csrf({ cookie: true });

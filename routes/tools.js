@@ -193,7 +193,7 @@ router.post('/routine', function(req, res, next) {
   // decode params
   var params = JSON.parse(req.body.params);
 
-  // set the routine (TODO: handle parameters)
+  // set the routine
   global.lichtenstein.setRoutine(req.body.routine, params, groupsToSet, function(data, err) {
     // handle errors
     if(err) {
