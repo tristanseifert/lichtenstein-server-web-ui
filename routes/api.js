@@ -17,6 +17,16 @@ const ensureJson = ensureCtype('json');
 
 router.post(ensureJson);
 
+// API is available from all origins via CORS
+var cors = require('cors');
+
+var corsOptions = {
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+router.use(cors(corsOptions));
+router.options('*', cors(corsOptions));
+
 // set up basic auth
 const basicAuth = require('express-basic-auth');
 
@@ -210,7 +220,7 @@ router.post('/util/setRoutine', function(req, res, next) {
 
   if(params != null) {
     // make sure it's an object (think "{}")
-    if(obj !== Object(obj) || Object.prototype.toString.call(obj) === '[object Array]') {
+    if(params !== Object(params) || Object.prototype.toString.call(params) === '[object Array]') {
       return next(new Error("Parameter `params` must be an object"));
     }
   }

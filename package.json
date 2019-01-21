@@ -8,6 +8,7 @@
   "dependencies": {
     "config": "^3.0.1",
     "cookie-parser": "~1.4.3",
+    "cors": "^2.8.5",
     "csurf": "^1.9.0",
     "debug": "~2.6.9",
     "express": "~4.16.0",
@@ -22,6 +23,7 @@
     "morgan": "~1.9.0",
     "node-sass-middleware": "0.11.0",
     "queue": "^5.0.0",
+    "throttle-debounce": "^2.1.0",
     "toastr": "^2.1.4"
   }
 }
