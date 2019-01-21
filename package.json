@@ -12,6 +12,7 @@
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "express-basic-auth": "^1.1.6",
+    "express-ensure-ctype": "^1.0.0",
     "express-handlebars": "^3.0.0",
     "foundation-sites": "^6.5.1",
     "hbs": "~4.0.1",
