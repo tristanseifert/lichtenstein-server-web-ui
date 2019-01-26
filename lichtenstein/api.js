@@ -193,7 +193,10 @@ var setRoutine = function(routineId, routineParams, groupIds, callback) {
     request.groups = [Number(groupIds)];
   }
 
-  // TODO: handle routineParams
+  // are there any params?
+  if(routineParams != null) {
+    request.routine.params = routineParams;
+  }
 
   // perform txn
   doTxn(request, callback);
